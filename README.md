@@ -32,21 +32,26 @@ helm install api ./api-date
 helm upgrade api ./api-date --wait
 ```
 
-## Access it 
+## How to access the API ? 
 
 ```
 export API_IP=$(minikube -p reezocar ip)
 export API_URL=api.reezocar.local
+
 curl -H "Host: $API_URL" http://$API_IP/getDate
 ```
 
 ## Deploy another instance with different timezone
 
+In order to deploy another instance with different timezone, you can create a new values file.
+You need to specify the value for `timezone` variable and change accordingly `ingress.hosts.host`.
+For example here, with GMT timezone.
+
 ```
 # Deploy with values file for GMT timezone
-helm install api-gmt ./api-date -f kubernetes/values.GMT.yaml
+helm upgrade api-gmt ./api-date -f ./values.GMT.yaml --wait
 
-# Access it
+# Access it !
 export API_URL=api.gmt.reezocar.local
 curl -H "Host: $API_URL" http://$API_IP/getDate
 ```
